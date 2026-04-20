@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Naipunyolsavam Activity Explorer</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-  /* 2026 New Age Editorial Design */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
 
   :root {
@@ -36,97 +35,57 @@
   }
   header h1 { 
     font-size: 28px; 
-    font-weight: 700; 
-    color: var(--primary);
-    letter-spacing: -0.02em;
+    font-weight: 900; 
+    color: var(--primary); 
     text-transform: uppercase;
-  }
-  header p { 
-    font-size: 14px; 
-    color: var(--text-muted); 
-    font-style: italic; 
-    margin-top: 8px;
-  }
-
-  #stats-bar {
-    display: none; justify-content: center; gap: 20px; padding: 10px 1rem;
-  }
-  #stats-bar.visible { display: flex; }
-  .stat-pill {
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--primary);
-    border-bottom: 1px solid var(--primary);
-    padding-bottom: 4px;
   }
 
   #search-wrap { padding: 20px 1.5rem; display: none; }
   #search-wrap.visible { display: block; }
   #search {
-    width: 100%; 
-    padding: 16px 24px; 
-    border: 1px solid var(--border-soft);
-    background: var(--white);
-    font-family: 'Noto Serif', serif;
-    font-size: 16px;
-    outline: none;
+    width: 100%; padding: 16px 24px; border: 1px solid var(--border-soft);
+    background: var(--white); font-family: 'Noto Serif', serif; font-size: 16px; outline: none;
   }
 
   #list { padding: 0 1.5rem; }
   .activity-card {
-    background: var(--white);
-    margin-bottom: 24px;
-    border-left: 4px solid var(--primary);
+    background: var(--white); margin-bottom: 24px; border-left: 5px solid var(--primary);
     box-shadow: 0 12px 24px rgba(0,0,0,0.03);
   }
 
   .act-header { padding: 24px; cursor: pointer; }
-  .sn-badge {
-    font-size: 12px; font-weight: 700; color: var(--primary);
-    display: block; margin-bottom: 8px; opacity: 0.6;
-  }
-  .act-name { font-size: 20px; line-height: 1.3; color: var(--primary); }
-  .act-obj { font-size: 15px; color: var(--text-muted); margin-top: 12px; line-height: 1.6; }
+  .sn-label { font-size: 11px; font-weight: 700; color: var(--primary); display: block; margin-bottom: 6px; text-transform: uppercase; }
 
-  /* Sub-tasks with 36px line spacing */
+  /* Section Title Branding */
+  .act-name { font-size: 22px; line-height: 1.3; color: var(--primary); font-weight: 900; }
+  .act-obj { font-size: 15px; color: var(--text-main); margin-top: 12px; line-height: 1.6; font-weight: 700; }
+
+  /* Accordion Dropdown Content */
   .sub-list { display: none; background: var(--primary-light); border-top: 1px solid var(--border-soft); }
   .sub-list.open { display: block; }
   .sub-item {
-    padding: 18px 24px;
-    border-bottom: 1px solid rgba(255,255,255,0.5);
-    cursor: pointer;
-    line-height: var(--line-spacing-custom);
+    padding: 18px 24px; border-bottom: 1px solid rgba(255,255,255,0.5);
+    cursor: pointer; line-height: var(--line-spacing-custom);
   }
-  .sub-sn { font-weight: 700; color: var(--primary); margin-right: 10px; font-size: 13px; }
-  .sub-title { font-size: 15px; color: var(--text-main); }
+  .sub-sn { font-weight: 900; color: var(--primary); margin-right: 12px; }
+  
+  /* Bold Overrides for Key Operational Points */
+  .forced-bold-task { font-weight: 900 !important; color: #000 !important; }
 
+  /* Overlay & Sheet Styling */
   .overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(26, 43, 50, 0.85);
+    display: none; position: fixed; inset: 0; background: rgba(26, 43, 50, 0.85);
     z-index: 1000; align-items: center; justify-content: center; padding: 20px;
   }
   .overlay.open { display: flex; }
   .sheet {
-    background: var(--white); width: 100%; max-width: 600px;
-    max-height: 80vh; overflow-y: auto; padding: 40px;
-    position: relative; border-top: 8px solid var(--primary);
+    background: var(--white); width: 100%; max-width: 600px; max-height: 80vh; 
+    overflow-y: auto; padding: 40px; position: relative; border-top: 8px solid var(--primary);
   }
   .sheet-close { position: absolute; top: 15px; right: 20px; font-size: 24px; border: none; background: none; color: var(--primary); cursor: pointer; }
-  .sheet-sn { font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--primary); }
-  .sheet-title { font-size: 22px; font-weight: 700; margin: 15px 0 25px; line-height: 1.4; }
-  .sheet-section { margin-bottom: 30px; }
-  .sheet-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; }
-  .sheet-value { font-size: 16px; line-height: var(--line-spacing-custom); }
 
-  .spinner {
-    width: 50px; height: 2px; background: var(--primary-light);
-    position: relative; overflow: hidden; margin: 0 auto 15px;
-  }
-  .spinner::after {
-    content: ''; width: 20px; height: 2px; background: var(--primary);
-    position: absolute; animation: wave 1.5s infinite linear;
-  }
+  .spinner { width: 50px; height: 2px; background: var(--primary-light); position: relative; overflow: hidden; margin: 0 auto 15px; }
+  .spinner::after { content: ''; width: 20px; height: 2px; background: var(--primary); position: absolute; animation: wave 1.5s infinite linear; }
   @keyframes wave { from { left: -20px; } to { left: 50px; } }
 </style>
 </head>
@@ -134,12 +93,10 @@
 
 <header>
   <h1>Naipunyolsavam 2026</h1>
-  <p>The Master Activity Index</p>
 </header>
 
-<div id="stats-bar"></div>
-<div id="search-wrap"><input type="search" id="search" placeholder="Type to filter..."></div>
-<div id="loading" style="text-align:center; padding: 50px;"><div class="spinner"></div><p>Establishing Connection...</p></div>
+<div id="search-wrap"><input type="search" id="search" placeholder="Filter through activity index..."></div>
+<div id="loading" style="text-align:center; padding: 50px;"><div class="spinner"></div><p style="font-size:12px; letter-spacing:1px; color:var(--primary);">ESTABLISHING PORTAL ACCESS...</p></div>
 <div id="list"></div>
 
 <div class="overlay" id="overlay" onclick="handleOverlayClick(event)">
@@ -189,29 +146,37 @@ function buildActivities(rows) {
 function renderList(activities) {
   const list = document.getElementById('list');
   list.innerHTML = '';
+
+  const targets = [
+    "Government & Administrative Setup: Secure formal orders",
+    "High Power Committee, convene the Executive Committee",
+    "Press meet by Labour and Skills Minister"
+  ];
+
   activities.forEach(act => {
     const card = document.createElement('div');
     card.className = 'activity-card';
     const bId = 'sub-' + act.sn.replace(/\s/g,'_');
 
-    // Bold points 1, 2, and 3 specifically
-    const isMajorPoint = /^[123](\.|$)/.test(act.sn.trim());
-    const displaySN = isMajorPoint ? `<strong>${act.sn}</strong>` : act.sn;
-    const displayAct = isMajorPoint ? `<strong>${act.activity}</strong>` : act.activity;
-
     card.innerHTML = `
       <div class="act-header" onclick="toggleAct('${bId}')">
-        <span class="sn-badge">SECTION ${displaySN}</span>
-        <div class="act-name">${displayAct}</div>
+        <span class="sn-label">SECTION ${act.sn}</span>
+        <div class="act-name">${act.activity}</div>
         ${act.objective ? `<div class="act-obj">${act.objective}</div>` : ''}
       </div>
       <div class="sub-list" id="${bId}">
-        ${act.tasks.map((t,i) => `
-          <div class="sub-item" onclick="openSheet(${act._idx},${i})">
-            ${t.tp ? `<span class="sub-sn">${t.tp}</span>` : ''}
-            <span class="sub-title">${t.sub}</span>
-          </div>
-        `).join('')}
+        ${act.tasks.map((t,i) => {
+          // Robust substring check for the requested bolded items
+          const isTarget = targets.some(target => t.sub.includes(target));
+          const boldClass = isTarget ? 'forced-bold-task' : '';
+          
+          return `
+            <div class="sub-item" onclick="openSheet(${act._idx},${i})">
+              ${t.tp ? `<span class="sub-sn ${boldClass}">${t.tp}</span>` : ''}
+              <span class="sub-title ${boldClass}">${t.sub}</span>
+            </div>
+          `;
+        }).join('')}
       </div>
     `;
     list.appendChild(card);
@@ -223,10 +188,8 @@ function toggleAct(id) { document.getElementById(id).classList.toggle('open'); }
 function openSheet(actIdx, taskIdx) {
   const t = allActivities[actIdx].tasks[taskIdx];
   document.getElementById('sheet-body').innerHTML = `
-    <div class="sheet-sn">Ref ${t.tp || 'N/A'}</div>
-    <div class="sheet-title">${t.sub}</div>
-    ${t.outcome ? `<div class="sheet-section"><div class="sheet-label">Strategic Outcome</div><div class="sheet-value">${t.outcome}</div></div>` : ''}
-    ${t.rationale ? `<div class="sheet-section"><div class="sheet-label">Rationale</div><div class="sheet-value">${t.rationale}</div></div>` : ''}
+    <div class="sheet-title" style="font-weight:900; line-height:36px; font-size:20px; color:var(--primary);">${t.sub}</div>
+    ${t.outcome ? `<div style="margin-top:25px;"><strong style="font-size:11px; text-transform:uppercase; color:var(--primary); letter-spacing:1px;">Strategic Outcome</strong><div style="line-height:36px; margin-top:10px;">${t.outcome}</div></div>` : ''}
   `;
   document.getElementById('overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -242,12 +205,10 @@ async function load() {
     const activities = buildActivities(parseCSV(text));
     activities.forEach((a,i) => a._idx = i);
     allActivities = activities;
-    document.getElementById('stats-bar').innerHTML = `<div class="stat-pill">${activities.length} Sections</div>`;
-    document.getElementById('stats-bar').classList.add('visible');
     document.getElementById('search-wrap').classList.add('visible');
     document.getElementById('loading').style.display = 'none';
     renderList(activities);
-  } catch(e) { document.getElementById('loading').innerHTML = 'Load Error'; }
+  } catch(e) { document.getElementById('loading').innerHTML = 'Sync Error - Offline'; }
 }
 
 load();
