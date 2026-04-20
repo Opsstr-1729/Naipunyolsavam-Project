@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Naipunyolsavam Activity Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  /* 2026 New Age Editorial Design */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+
+  :root {
+    --primary: #0e5774;
+    --primary-light: #e7eff2;
+    --bg-main: #f9fbfb;
+    --text-main: #1a2b32;
+    --text-muted: #536b75;
+    --white: #ffffff;
+    --line-spacing-custom: 36px;
+    --border-soft: rgba(14, 87, 116, 0.15);
+  }
+
+  body {
+    font-family: 'Noto Serif', serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    padding-bottom: 5rem;
+  }
+
+  header {
+    background: var(--white);
+    padding: 2.5rem 1.5rem 1.5rem;
+    border-bottom: 3px double var(--primary);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  header h1 { 
+    font-size: 28px; 
+    font-weight: 700; 
+    color: var(--primary);
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+  header p { 
+    font-size: 14px; 
+    color: var(--text-muted); 
+    font-style: italic; 
+    margin-top: 8px;
+  }
+
+  #stats-bar {
+    display: none; justify-content: center; gap: 20px; padding: 10px 1rem;
+  }
+  #stats-bar.visible { display: flex; }
+  .stat-pill {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--primary);
+    border-bottom: 1px solid var(--primary);
+    padding-bottom: 4px;
+  }
+
+  #search-wrap { padding: 20px 1.5rem; display: none; }
+  #search-wrap.visible { display: block; }
+  #search {
+    width: 100%; 
+    padding: 16px 24px; 
+    border: 1px solid var(--border-soft);
+    background: var(--white);
+    font-family: 'Noto Serif', serif;
+    font-size: 16px;
+    outline: none;
+  }
+
+  #list { padding: 0 1.5rem; }
+  .activity-card {
+    background: var(--white);
+    margin-bottom: 24px;
+    border-left: 4px solid var(--primary);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.03);
+  }
+
+  .act-header { padding: 24px; cursor: pointer; }
+  .sn-badge {
+    font-size: 12px; font-weight: 700; color: var(--primary);
+    display: block; margin-bottom: 8px; opacity: 0.6;
+  }
+  .act-name { font-size: 20px; line-height: 1.3; color: var(--primary); }
+  .act-obj { font-size: 15px; color: var(--text-muted); margin-top: 12px; line-height: 1.6; }
+
+  /* Sub-tasks with 36px line spacing */
+  .sub-list { display: none; background: var(--primary-light); border-top: 1px solid var(--border-soft); }
+  .sub-list.open { display: block; }
+  .sub-item {
+    padding: 18px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+    cursor: pointer;
+    line-height: var(--line-spacing-custom);
+  }
+  .sub-sn { font-weight: 700; color: var(--primary); margin-right: 10px; font-size: 13px; }
+  .sub-title { font-size: 15px; color: var(--text-main); }
+
+  .overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(26, 43, 50, 0.85);
+    z-index: 1000; align-items: center; justify-content: center; padding: 20px;
+  }
+  .overlay.open { display: flex; }
+  .sheet {
+    background: var(--white); width: 100%; max-width: 600px;
+    max-height: 80vh; overflow-y: auto; padding: 40px;
+    position: relative; border-top: 8px solid var(--primary);
+  }
+  .sheet-close { position: absolute; top: 15px; right: 20px; font-size: 24px; border: none; background: none; color: var(--primary); cursor: pointer; }
+  .sheet-sn { font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--primary); }
+  .sheet-title { font-size: 22px; font-weight: 700; margin: 15px 0 25px; line-height: 1.4; }
+  .sheet-section { margin-bottom: 30px; }
+  .sheet-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; }
+  .sheet-value { font-size: 16px; line-height: var(--line-spacing-custom); }
+
+  .spinner {
+    width: 50px; height: 2px; background: var(--primary-light);
+    position: relative; overflow: hidden; margin: 0 auto 15px;
+  }
+  .spinner::after {
+    content: ''; width: 20px; height: 2px; background: var(--primary);
+    position: absolute; animation: wave 1.5s infinite linear;
+  }
+  @keyframes wave { from { left: -20px; } to { left: 50px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Naipunyolsavam 2026</h1>
+  <p>The Master Activity Index</p>
+</header>
+
+<div id="stats-bar"></div>
+<div id="search-wrap"><input type="search" id="search" placeholder="Type to filter..."></div>
+<div id="loading" style="text-align:center; padding: 50px;"><div class="spinner"></div><p>Establishing Connection...</p></div>
+<div id="list"></div>
+
+<div class="overlay" id="overlay" onclick="handleOverlayClick(event)">
+  <div class="sheet" id="sheet">
+    <button class="sheet-close" onclick="closeSheet()">&#x2715;</button>
+    <div id="sheet-body"></div>
+  </div>
+</div>
+
+<script>
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRRwWUVRbXMzCdIg2oRYvNPhBcEa8Z-aF0IVYtJY9Y_j0XdfueHp1LVidDSW0Ijt1O_bQWPE-aTtdk8/pub?output=csv';
+let allActivities = [];
+
+function parseCSV(text) {
+  const rows = []; let row = []; let cur = ''; let inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === '"') { if (inQ && text[i+1] === '"') { cur += '"'; i++; } else inQ = !inQ; }
+    else if (ch === ',' && !inQ) { row.push(cur.trim()); cur = ''; }
+    else if ((ch === '\n' || (ch === '\r' && text[i+1] === '\n')) && !inQ) {
+      if (ch === '\r') i++; row.push(cur.trim()); rows.push(row); row = []; cur = '';
+    } else cur += ch;
+  }
+  if (cur || row.length) { row.push(cur.trim()); rows.push(row); }
+  return rows;
+}
+
+function buildActivities(rows) {
+  const headers = rows[0].map(h => h.replace(/\n/g,' ').trim());
+  const idx = k => headers.findIndex(h => h.toLowerCase().includes(k.toLowerCase()));
+  const iSN = idx('serial'), iAct = idx('activity'), iObj = idx('objective'), iTP = idx('precedence'), iSub = idx('sub-act'), iTL = idx('timeline'), iOut = idx('outcome'), iRat = idx('rationale');
+  const activities = [];
+  let lastSN = '', lastAct = '', lastObj = '';
+  rows.slice(1).forEach(r => {
+    const get = i => (i >= 0 && i < r.length) ? r[i].replace(/\n/g,' ').trim() : '';
+    const sn = get(iSN) || lastSN, act = get(iAct) || lastAct, obj = get(iObj) || lastObj;
+    if (get(iSN)) lastSN = sn; if (get(iAct)) lastAct = act; if (get(iObj)) lastObj = obj;
+    if (!sn) return;
+    let parent = activities.find(a => a.sn === sn);
+    if (!parent) { parent = { sn, activity: act, objective: obj, tasks: [] }; activities.push(parent); }
+    const tp = get(iTP), sub = get(iSub);
+    if (tp || sub) parent.tasks.push({ tp, sub, timeline: get(iTL), outcome: get(iOut), rationale: get(iRat) });
+  });
+  return activities;
+}
+
+function renderList(activities) {
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+  activities.forEach(act => {
+    const card = document.createElement('div');
+    card.className = 'activity-card';
+    const bId = 'sub-' + act.sn.replace(/\s/g,'_');
+
+    // Bold points 1, 2, and 3 specifically
+    const isMajorPoint = /^[123](\.|$)/.test(act.sn.trim());
+    const displaySN = isMajorPoint ? `<strong>${act.sn}</strong>` : act.sn;
+    const displayAct = isMajorPoint ? `<strong>${act.activity}</strong>` : act.activity;
+
+    card.innerHTML = `
+      <div class="act-header" onclick="toggleAct('${bId}')">
+        <span class="sn-badge">SECTION ${displaySN}</span>
+        <div class="act-name">${displayAct}</div>
+        ${act.objective ? `<div class="act-obj">${act.objective}</div>` : ''}
+      </div>
+      <div class="sub-list" id="${bId}">
+        ${act.tasks.map((t,i) => `
+          <div class="sub-item" onclick="openSheet(${act._idx},${i})">
+            ${t.tp ? `<span class="sub-sn">${t.tp}</span>` : ''}
+            <span class="sub-title">${t.sub}</span>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+function toggleAct(id) { document.getElementById(id).classList.toggle('open'); }
+
+function openSheet(actIdx, taskIdx) {
+  const t = allActivities[actIdx].tasks[taskIdx];
+  document.getElementById('sheet-body').innerHTML = `
+    <div class="sheet-sn">Ref ${t.tp || 'N/A'}</div>
+    <div class="sheet-title">${t.sub}</div>
+    ${t.outcome ? `<div class="sheet-section"><div class="sheet-label">Strategic Outcome</div><div class="sheet-value">${t.outcome}</div></div>` : ''}
+    ${t.rationale ? `<div class="sheet-section"><div class="sheet-label">Rationale</div><div class="sheet-value">${t.rationale}</div></div>` : ''}
+  `;
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSheet() { document.getElementById('overlay').classList.remove('open'); document.body.style.overflow = ''; }
+function handleOverlayClick(e) { if (e.target.id === 'overlay') closeSheet(); }
+
+async function load() {
+  try {
+    const resp = await fetch(CSV_URL);
+    const text = await resp.text();
+    const activities = buildActivities(parseCSV(text));
+    activities.forEach((a,i) => a._idx = i);
+    allActivities = activities;
+    document.getElementById('stats-bar').innerHTML = `<div class="stat-pill">${activities.length} Sections</div>`;
+    document.getElementById('stats-bar').classList.add('visible');
+    document.getElementById('search-wrap').classList.add('visible');
+    document.getElementById('loading').style.display = 'none';
+    renderList(activities);
+  } catch(e) { document.getElementById('loading').innerHTML = 'Load Error'; }
+}
+
+load();
+</script>
+</body>
+</html>
