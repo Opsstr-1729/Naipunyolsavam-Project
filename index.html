@@ -482,16 +482,25 @@
     const CSV_URL =
       'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3Wf8Z0hI7QOV2hT6Zva3Sv8aDENODEieQjHqgRw6Th-zVj2Z-6LbTjwUajGlPpFbraq56JwSGJ78K/pub?output=csv';
 
-    /* Column indices (0-based) – adjust if sheet order changes */
+    /* Column indices (0-based) — matches Google Sheet / docx column order:
+       Col 0: Serial Number (only 1–6 are main activity IDs; blank for sub-rows)
+       Col 1: Activity Title
+       Col 2: Objective
+       Col 3: Task Precedence (0.1, 0.2, 1, 1.1, 2, 2.1 … 8.5)
+       Col 4: Sub-Activities / Process Involved
+       Col 5: Timeline
+       Col 6: Outcome
+       Col 7: Rationale
+    */
     const COL = {
-      ID:           0,  // Serial Number / Task Precedence
-      ACTIVITY:     1,  // Activity Title
-      OBJECTIVE:    2,  // Objective
-      TASK_PREC:    3,  // Task Precedence (sub-task ID like 1, 1.1, 2 …)
-      SUB_ACTIVITY: 4,  // Sub-Activity / Process Involved
-      TIMELINE:     5,  // Timeline
-      OUTCOME:      6,  // Outcome
-      RATIONALE:    7,  // Rationale
+      ID:           0,
+      ACTIVITY:     1,
+      OBJECTIVE:    2,
+      TASK_PREC:    3,
+      SUB_ACTIVITY: 4,
+      TIMELINE:     5,
+      OUTCOME:      6,
+      RATIONALE:    7,
     };
 
     /* ============================================================
@@ -537,10 +546,49 @@
     }
 
     /**
+     * Returns true only for genuine MAIN activity rows.
+     *
+     * A main activity row has:
+     *   col 0 (ID)       → a STRICT POSITIVE INTEGER  ("1", "2" … "6")
+     *   col 1 (Activity) → a non-empty title
+     *   col 3 (TaskPrec) → EMPTY  (sub-tasks have their ID here, not in col 0)
+     *
+     * This prevents false positives like:
+     *   "0.1", "0.2"  → decimal pre-task IDs that Google Sheets can put in col 0
+     *   "3","4"…"8"   → whole-number milestone IDs that belong in col 3
+     */
+    function isMainActivityRow(row) {
+      // A main activity row has ALL of:
+      //   col 0 (Serial)   → a STRICT POSITIVE INTEGER with NO decimal: "1","2"…"6"
+      //   col 1 (Activity) → a non-empty title string
+      //   col 2 (Objective)→ a non-empty objective string
+      //
+      // Sub-activity rows ALWAYS have col 0 empty (blank) and their ID in col 3.
+      // The previous guard on col 3 was wrong — main rows in the live sheet
+      // also carry a value in col 3 (the first child task ID).
+      const serial    = (row[COL.ID]        || '').trim();
+      const title     = (row[COL.ACTIVITY]  || '').trim();
+      const objective = (row[COL.OBJECTIVE] || '').trim();
+
+      if (!serial)    return false;  // blank col 0 → definitely a sub-row
+      if (!title)     return false;  // no activity title → sub-row
+      if (!objective) return false;  // no objective → sub-row (sub-rows never have objectives)
+      const n = Number(serial);
+      if (!Number.isFinite(n))  return false;
+      if (!Number.isInteger(n)) return false;  // decimals like 0.1, 0.2 → sub-task
+      if (n < 1)                return false;  // must be a positive integer
+      return true;
+    }
+
+    /**
      * Transform raw CSV rows into structured activity objects.
      *
-     * Schema:
-     *   { id, title, objective, subActivities: [{ taskPrec, detail, outcome, rationale, isSection }] }
+     * Schema: { id, title, objective,
+     *           subActivities: [{ taskPrec, detail, outcome, rationale, isSection }] }
+     *
+     * Key parsing rule (from docx / live Google Sheet):
+     *   • Col 0 positive integer + Col 1 title + Col 2 objective → NEW Main Activity
+     *   • All other data rows (Col 0 empty; task ID like 0.1, 1, 1.1 … in Col 3) → Sub-Activity
      */
     function buildActivities(rows) {
       const activities = [];
@@ -549,28 +597,49 @@
       // Skip header row (row 0)
       for (let r = 1; r < rows.length; r++) {
         const row = rows[r];
-        const serialNum   = (row[COL.ID]          || '').trim();
-        const actTitle    = (row[COL.ACTIVITY]     || '').trim();
-        const objective   = (row[COL.OBJECTIVE]    || '').trim();
-        const taskPrec    = (row[COL.TASK_PREC]    || '').trim();
-        const subDetail   = (row[COL.SUB_ACTIVITY] || '').trim();
-        const outcome     = (row[COL.OUTCOME]      || '').trim();
-        const rationale   = (row[COL.RATIONALE]    || '').trim();
 
-        if (serialNum && !isNaN(Number(serialNum))) {
+        const taskPrec  = (row[COL.TASK_PREC]    || '').trim();
+        const subDetail = (row[COL.SUB_ACTIVITY] || '').trim();
+        const outcome   = (row[COL.OUTCOME]      || '').trim();
+        const rationale = (row[COL.RATIONALE]    || '').trim();
+
+        if (isMainActivityRow(row)) {
           // ── New MAIN activity ──
           current = {
-            id:            serialNum,
-            title:         actTitle,
-            objective:     objective,
+            id:            (row[COL.ID]        || '').trim(),
+            title:         (row[COL.ACTIVITY]  || '').trim(),
+            objective:     (row[COL.OBJECTIVE] || '').trim(),
             subActivities: [],
           };
           activities.push(current);
-        } else if (current && (taskPrec || subDetail)) {
+
+          // CRITICAL FIX: The main activity row itself often contains the FIRST
+          // sub-activity in cols 3 & 4 on the very same row (as seen in the docx/sheet).
+          // We must capture it here — the else-if below won't run for this row.
+          if (taskPrec || subDetail) {
+            const tpNum     = Number(taskPrec);
+            const isSection = /^\d+$/.test(taskPrec)
+                              && Number.isFinite(tpNum)
+                              && Number.isInteger(tpNum)
+                              && tpNum >= 1;
+            current.subActivities.push({ taskPrec, detail: subDetail, outcome, rationale, isSection });
+          }
+
+        } else if (taskPrec || subDetail) {
           // ── Sub-activity row ──
-          // Detect "section header" rows: those with bold/numbered task but no detailed sub-text
-          // Heuristic: taskPrec is a whole integer (1, 2, 3 …) → treat as section
-          const isSection = /^\d+$/.test(taskPrec);
+          // Guard: if no parent yet (edge case at top of sheet), create placeholder
+          if (!current) {
+            current = { id: '?', title: 'Uncategorised', objective: '', subActivities: [] };
+            activities.push(current);
+          }
+
+          // "Section header" rows are bold milestone steps with whole-number IDs (1, 2 … 8).
+          // They differ from decimal sub-steps (0.1, 1.1, 2.3 …).
+          const tpNum     = Number(taskPrec);
+          const isSection = /^\d+$/.test(taskPrec)
+                            && Number.isFinite(tpNum)
+                            && Number.isInteger(tpNum)
+                            && tpNum >= 1;
 
           current.subActivities.push({
             taskPrec,
@@ -580,6 +649,7 @@
             isSection,
           });
         }
+        // Completely blank rows are silently skipped
       }
 
       return activities;
