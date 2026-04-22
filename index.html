@@ -6,21 +6,18 @@
   <title>Naipunyolsavam 2026 — Project Management Portal</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
 
   <script>
     tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            display: ['Rajdhani', 'sans-serif'],
-            body:    ['DM Sans', 'sans-serif'],
-          },
-        },
-      },
+      theme: { extend: {
+        fontFamily: {
+          display: ['Rajdhani','sans-serif'],
+          body:    ['DM Sans','sans-serif']
+        }
+      }}
     };
   </script>
 
@@ -28,439 +25,264 @@
     *, *::before, *::after { box-sizing: border-box; }
 
     :root {
-      --teal-900:    #0a3d52;
-      --teal-800:    #0e5774;   /* PRIMARY BRAND */
-      --teal-700:    #116b8e;
-      --teal-600:    #1380a8;
-      --teal-500:    #1a9dc9;
-      --teal-400:    #2db8e4;
-      --teal-200:    #a8dff0;
-      --teal-100:    #d4eff8;
-      --teal-50:     #edf8fd;
-
-      --bg-page:     #f0f8fc;
-      --bg-white:    #ffffff;
-      --bg-offwhite: #f7fbfd;
-      --border:      #c2e4f0;
-      --border-mid:  #8fcfe6;
-
-      --text-dark:   #0a2d3d;
-      --text-mid:    #2d6f88;
-      --text-muted:  #6ba3b8;
-      --text-light:  #9dc8d8;
-
-      --accent:      #0e5774;
-      --accent-mid:  #1a9dc9;
-      --accent-lite: #2db8e4;
-
-      --green:       #0d9276;
-      --green-bg:    #e6f7f4;
-      --green-border:#a7e0d6;
-
-      --shadow-sm:   0 1px 4px rgba(14,87,116,.08);
-      --shadow-md:   0 4px 16px rgba(14,87,116,.12);
-      --shadow-lg:   0 8px 32px rgba(14,87,116,.16);
+      --t900: #0a3d52;
+      --t800: #0e5774;
+      --t700: #116b8e;
+      --t600: #1380a8;
+      --t500: #1a9dc9;
+      --t400: #2db8e4;
+      --t200: #a8dff0;
+      --t100: #d4eff8;
+      --t50:  #edf8fd;
+      --bg:       #f0f8fc;
+      --white:    #ffffff;
+      --offwhite: #f7fbfd;
+      --border:   #c2e4f0;
+      --bord-mid: #8fcfe6;
+      --ink:      #0a2d3d;
+      --ink-mid:  #2d6f88;
+      --ink-mute: #6ba3b8;
+      --ink-lite: #a8c8d5;
+      --green:    #0d9276;
+      --green-bg: #e6f7f4;
+      --green-bd: #a7e0d6;
+      --shadow-s: 0 1px 4px rgba(14,87,116,.08);
+      --shadow-m: 0 4px 16px rgba(14,87,116,.12);
+      --shadow-l: 0 8px 32px rgba(14,87,116,.16);
     }
 
     body {
-      background-color: var(--bg-page);
-      color: var(--text-dark);
+      background: var(--bg);
+      color: var(--ink);
       font-family: 'DM Sans', sans-serif;
       min-height: 100vh;
     }
-
-    /* ── Subtle dot grid background ── */
     body::before {
       content: '';
-      position: fixed;
-      inset: 0;
-      background-image: radial-gradient(circle, rgba(14,87,116,.1) 1px, transparent 1px);
+      position: fixed; inset: 0;
+      background-image: radial-gradient(circle, rgba(14,87,116,.09) 1px, transparent 1px);
       background-size: 28px 28px;
-      pointer-events: none;
-      z-index: 0;
+      pointer-events: none; z-index: 0;
     }
 
-    /* ── Header ── */
-    .header-bar {
-      background: var(--teal-800);
-      position: relative;
-      overflow: hidden;
-    }
-    /* diagonal watermark pattern */
+    /* HEADER */
+    .header-bar { background: var(--t800); position: relative; overflow: hidden; }
     .header-bar::before {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content: ''; position: absolute; inset: 0;
       background-image:
-        linear-gradient(135deg, rgba(255,255,255,.04) 25%, transparent 25%),
-        linear-gradient(225deg, rgba(255,255,255,.04) 25%, transparent 25%);
-      background-size: 40px 40px;
-      pointer-events: none;
+        linear-gradient(135deg, rgba(255,255,255,.035) 25%, transparent 25%),
+        linear-gradient(225deg, rgba(255,255,255,.035) 25%, transparent 25%);
+      background-size: 44px 44px; pointer-events: none;
     }
     .header-bar::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, var(--teal-900), var(--teal-400), var(--teal-500), var(--teal-400), var(--teal-900));
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--t900), var(--t400), var(--t500), var(--t400), var(--t900));
     }
-
     .emblem-bg {
-      position: absolute;
-      right: 3rem; top: 50%;
-      transform: translateY(-50%);
-      font-size: 9rem;
-      opacity: .06;
-      user-select: none;
-      pointer-events: none;
-      font-family: serif;
-      color: #fff;
+      position: absolute; right: 3rem; top: 50%; transform: translateY(-50%);
+      font-size: 9rem; opacity: .055; user-select: none;
+      pointer-events: none; font-family: serif; color: #fff;
     }
 
-    /* ── Progress strip ── */
-    .progress-strip {
-      display: flex;
-      gap: 3px;
-      height: 5px;
-    }
-    .progress-strip span {
-      flex: 1;
-      border-radius: 3px;
-    }
+    /* PROGRESS */
+    .progress-strip { display: flex; gap: 3px; height: 5px; }
+    .progress-strip span { flex: 1; border-radius: 3px; }
 
-    /* ── Stats pills ── */
+    /* STAT PILLS */
     .stat-pill {
-      background: rgba(255,255,255,.12);
-      border: 1px solid rgba(255,255,255,.2);
-      border-radius: .625rem;
-      padding: .6rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      background: rgba(255,255,255,.13);
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: .65rem; padding: .6rem 1.6rem;
+      display: flex; flex-direction: column; align-items: center;
       backdrop-filter: blur(4px);
     }
     .stat-pill .val {
       font-family: 'Rajdhani', sans-serif;
-      font-size: 1.65rem;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1;
+      font-size: 1.75rem; font-weight: 700; color: #fff; line-height: 1;
     }
     .stat-pill .lbl {
-      font-size: .68rem;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      color: rgba(255,255,255,.6);
-      margin-top: .2rem;
+      font-size: .67rem; text-transform: uppercase;
+      letter-spacing: .09em; color: rgba(255,255,255,.58); margin-top: .2rem;
     }
 
-    /* ── Search ── */
+    /* SEARCH */
     .search-wrap { position: relative; }
     .search-wrap svg {
-      position: absolute;
-      left: 1rem; top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      pointer-events: none;
+      position: absolute; left: 1rem; top: 50%;
+      transform: translateY(-50%); color: var(--ink-lite); pointer-events: none;
     }
     #searchInput {
-      background: var(--bg-white);
-      border: 1.5px solid var(--border);
-      color: var(--text-dark);
-      padding: .8rem 1rem .8rem 3rem;
-      border-radius: .75rem;
-      width: 100%;
-      font-family: 'DM Sans', sans-serif;
-      font-size: .9rem;
-      box-shadow: var(--shadow-sm);
-      outline: none;
+      background: var(--white); border: 1.5px solid var(--border);
+      color: var(--ink); padding: .82rem 1rem .82rem 3rem;
+      border-radius: .75rem; width: 100%;
+      font-family: 'DM Sans', sans-serif; font-size: .9rem;
+      box-shadow: var(--shadow-s); outline: none;
       transition: border-color .2s, box-shadow .2s;
     }
     #searchInput:focus {
-      border-color: var(--accent-mid);
-      box-shadow: 0 0 0 3px rgba(26,157,201,.15), var(--shadow-sm);
+      border-color: var(--t500);
+      box-shadow: 0 0 0 3px rgba(26,157,201,.14), var(--shadow-s);
     }
-    #searchInput::placeholder { color: var(--text-light); }
+    #searchInput::placeholder { color: var(--ink-lite); }
 
-    /* ── Activity cards ── */
+    /* CARDS */
     .activity-card {
-      background: var(--bg-white);
-      border: 1.5px solid var(--border);
-      border-radius: 1rem;
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
+      background: var(--white); border: 1.5px solid var(--border);
+      border-radius: 1rem; overflow: hidden; box-shadow: var(--shadow-s);
       transition: border-color .2s, box-shadow .2s, transform .15s;
     }
     .activity-card:hover {
-      border-color: var(--border-mid);
-      box-shadow: var(--shadow-md);
-      transform: translateY(-1px);
+      border-color: var(--bord-mid);
+      box-shadow: var(--shadow-m); transform: translateY(-1px);
     }
-
-    /* ── Card header ── */
     .card-header {
-      display: flex;
-      align-items: flex-start;
-      gap: 1.25rem;
-      padding: 1.4rem 1.5rem;
-      cursor: pointer;
-      user-select: none;
-      background: transparent;
-      border: none;
-      width: 100%;
-      text-align: left;
+      display: flex; align-items: flex-start; gap: 1.25rem;
+      padding: 1.4rem 1.5rem; cursor: pointer; user-select: none;
+      background: transparent; border: none; width: 100%; text-align: left;
       transition: background .15s;
     }
-    .card-header:hover { background: var(--teal-50); }
-
-    /* ── Serial badge ── */
+    .card-header:hover { background: var(--t50); }
     .serial-badge {
-      flex-shrink: 0;
-      width: 2.75rem; height: 2.75rem;
+      flex-shrink: 0; width: 2.75rem; height: 2.75rem;
       border-radius: .625rem;
       display: flex; align-items: center; justify-content: center;
       font-family: 'Rajdhani', sans-serif;
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: #fff;
-      box-shadow: var(--shadow-sm);
+      font-weight: 700; font-size: 1.2rem; color: #fff;
+      box-shadow: var(--shadow-s);
     }
-
-    /* ── Chevron ── */
     .chevron {
-      flex-shrink: 0;
-      margin-left: auto;
-      width: 1.4rem; height: 1.4rem;
-      color: var(--text-muted);
-      transition: transform .25s ease, color .2s;
+      flex-shrink: 0; margin-left: auto; width: 1.4rem; height: 1.4rem;
+      color: var(--ink-mute); transition: transform .25s ease, color .2s;
     }
-    .card-header[aria-expanded="true"] .chevron {
-      transform: rotate(180deg);
-      color: var(--accent);
-    }
+    .card-header[aria-expanded="true"] .chevron { transform: rotate(180deg); color: var(--t600); }
 
-    /* ── Accordion body ── */
-    .accordion-body {
-      display: none;
-      border-top: 1.5px solid var(--border);
-    }
+    /* ACCORDION */
+    .accordion-body { display: none; border-top: 1.5px solid var(--border); }
     .accordion-body.open { display: block; }
 
-    /* ── Sub-table ── */
-    .sub-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: .83rem;
-    }
-    .sub-table thead tr {
-      background: var(--teal-50);
-      border-bottom: 1.5px solid var(--border);
-    }
+    /* TABLE */
+    .sub-table { width: 100%; border-collapse: collapse; font-size: .83rem; }
+    .sub-table thead tr { background: var(--t50); border-bottom: 1.5px solid var(--border); }
     .sub-table thead th {
-      padding: .7rem 1.1rem;
-      text-align: left;
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 700;
-      font-size: .76rem;
-      letter-spacing: .07em;
-      text-transform: uppercase;
-      color: var(--teal-800);
-      white-space: nowrap;
+      padding: .7rem 1.1rem; text-align: left;
+      font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: .76rem; letter-spacing: .07em; text-transform: uppercase;
+      color: var(--t800); white-space: nowrap;
     }
-    .sub-table tbody tr {
-      border-top: 1px solid #e8f4f9;
-      transition: background .12s;
-    }
+    .sub-table tbody tr { border-top: 1px solid #e8f4f9; transition: background .12s; }
     .sub-table tbody tr:hover { background: #f5fbfe; }
-    .sub-table td {
-      padding: .8rem 1.1rem;
-      vertical-align: top;
-      color: var(--text-dark);
-      line-height: 1.55;
-    }
-    .sub-table td:first-child {
-      font-family: 'Courier New', monospace;
-      font-size: .78rem;
-      font-weight: 700;
-      white-space: nowrap;
-    }
+    .sub-table td { padding: .82rem 1.1rem; vertical-align: top; color: var(--ink); line-height: 1.55; }
+    .sub-table td:first-child { font-family: 'Courier New', monospace; font-size: .77rem; font-weight: 700; white-space: nowrap; }
+    .sub-table th,
+    .sub-table td { border-right: 1px solid #daeef6; }
+    .sub-table th:last-child,
+    .sub-table td:last-child { border-right: none; }
 
-    /* ── Section header rows (bold milestone tasks) ── */
-    .sub-table tr.is-section td {
-      background: linear-gradient(90deg, #e8f4fb, #f0f9fd);
-      color: var(--teal-800);
-      font-weight: 600;
-      border-left: 3px solid var(--teal-500);
-    }
-    .sub-table tr.is-section td:first-child {
-      border-left: 3px solid var(--teal-500);
-    }
+    /* SECTION HEADER ROWS */
+    .sub-table tr.is-section td { background: linear-gradient(90deg,#e2f1fb,#f0f9fd); color: var(--t800); font-weight: 600; }
+    .sub-table tr.is-section td:first-child { border-left: 3px solid var(--t500); }
 
-    /* ── Outcome badge ── */
+    /* BADGES */
     .badge-outcome {
       display: inline-block;
-      background: var(--green-bg);
-      color: var(--green);
-      border: 1px solid var(--green-border);
-      border-radius: 999px;
-      padding: .22rem .7rem;
-      font-size: .74rem;
-      line-height: 1.45;
-      font-weight: 500;
+      background: var(--green-bg); color: var(--green);
+      border: 1px solid var(--green-bd); border-radius: 999px;
+      padding: .22rem .72rem; font-size: .74rem; line-height: 1.45; font-weight: 500;
     }
-
-    /* ── Precedence badge ── */
     .badge-prec {
       display: inline-block;
-      background: var(--teal-50);
-      color: var(--teal-800);
-      border: 1px solid var(--teal-200);
-      border-radius: .35rem;
-      padding: .18rem .6rem;
-      font-family: 'Courier New', monospace;
-      font-size: .78rem;
-      white-space: nowrap;
-      font-weight: 700;
+      background: var(--t50); color: var(--t800);
+      border: 1px solid var(--t200); border-radius: .35rem;
+      padding: .18rem .6rem; font-family: 'Courier New', monospace;
+      font-size: .77rem; white-space: nowrap; font-weight: 700;
     }
+    .rationale-text { font-style: italic; color: var(--ink-mute); font-size: .8rem; }
 
-    /* ── Rationale ── */
-    .rationale-text {
-      font-style: italic;
-      color: var(--text-muted);
-      font-size: .8rem;
-    }
-
-    /* ── Skeleton ── */
+    /* SKELETON */
     .skeleton {
-      background: linear-gradient(90deg, #e4f2f8 25%, #c8e6f2 50%, #e4f2f8 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
-      border-radius: .625rem;
+      background: linear-gradient(90deg,#e4f2f8 25%,#c8e6f2 50%,#e4f2f8 75%);
+      background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: .625rem;
     }
-    @keyframes shimmer {
-      0%   { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 
-    /* ── Error card ── */
+    /* ERROR */
     .error-card {
-      background: #fff5f5;
-      border: 1.5px solid #fecaca;
-      border-radius: 1rem;
-      padding: 2.5rem;
-      text-align: center;
-      box-shadow: var(--shadow-sm);
+      background: #fff5f5; border: 1.5px solid #fecaca;
+      border-radius: 1rem; padding: 2.5rem; text-align: center; box-shadow: var(--shadow-s);
     }
 
-    /* ── No results ── */
-    #noResults {
-      display: none;
-      text-align: center;
-      padding: 3rem 1rem;
-      color: var(--text-muted);
-      font-style: italic;
-    }
+    #noResults { display:none; text-align:center; padding:3rem 1rem; color:var(--ink-mute); font-style:italic; }
 
-    /* ── Scrollbar ── */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: var(--teal-50); }
-    ::-webkit-scrollbar-thumb { background: var(--teal-200); border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--teal-400); }
+    ::-webkit-scrollbar-track { background: var(--t50); }
+    ::-webkit-scrollbar-thumb { background: var(--t200); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--t400); }
 
-    /* ── Table scroll wrapper ── */
     .table-scroll { overflow-x: auto; }
 
-    /* ── Card fade-in ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
     .fade-up { animation: fadeUp .3s ease both; }
-
-    /* ── Live badge pulse ── */
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: .5; transform: scale(.85); }
-    }
-
-    /* ── Section divider label ── */
-    .section-label {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: .7rem;
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      padding: .5rem 1.1rem;
-      background: var(--bg-offwhite);
-      border-bottom: 1px solid #e8f4f9;
-    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.45;transform:scale(.82)} }
   </style>
 </head>
 <body class="relative z-0">
 
-  <!-- ══════════════════ HEADER ══════════════════ -->
+  <!-- HEADER -->
   <header class="header-bar relative z-10 py-7 px-4 md:px-10">
     <div class="emblem-bg">⚜</div>
     <div class="max-w-7xl mx-auto relative z-10">
-
-      <!-- Top row -->
       <div class="flex flex-wrap items-center gap-4">
         <div class="flex items-center gap-4 flex-1">
-          <!-- Icon -->
-          <div style="width:56px;height:56px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.25);border-radius:.875rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;backdrop-filter:blur(4px);">
+          <div style="width:56px;height:56px;background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.24);border-radius:.875rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;backdrop-filter:blur(4px);">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;">
               <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
             </svg>
           </div>
-          <!-- Title -->
           <div>
-            <div style="font-family:'Rajdhani',sans-serif;font-size:1.8rem;font-weight:700;letter-spacing:.02em;color:#fff;line-height:1;">
+            <div style="font-family:'Rajdhani',sans-serif;font-size:1.85rem;font-weight:700;letter-spacing:.02em;color:#fff;line-height:1.05;">
               Naipunyolsavam 2026
             </div>
-            <div style="font-size:.75rem;color:rgba(255,255,255,.55);letter-spacing:.09em;text-transform:uppercase;margin-top:.2rem;">
+            <div style="font-size:.74rem;color:rgba(255,255,255,.52);letter-spacing:.09em;text-transform:uppercase;margin-top:.2rem;">
               Project Management Portal &nbsp;·&nbsp; Kerala Academy for Skills Excellence
             </div>
           </div>
         </div>
-
-        <!-- Live badge -->
-        <div style="display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:.4rem 1rem;backdrop-filter:blur(4px);">
+        <div style="display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:.4rem 1rem;backdrop-filter:blur(4px);">
           <span style="width:8px;height:8px;border-radius:50%;background:#5ef0c4;display:inline-block;animation:pulse 2s infinite;"></span>
-          <span style="font-size:.74rem;color:rgba(255,255,255,.9);font-weight:600;letter-spacing:.05em;">LIVE PORTAL</span>
+          <span style="font-size:.73rem;color:rgba(255,255,255,.9);font-weight:600;letter-spacing:.05em;">LIVE PORTAL</span>
         </div>
       </div>
 
-      <!-- Stats row -->
+      <!-- Stats (shown after load) -->
       <div id="statsRow" class="flex flex-wrap gap-3 mt-5" style="display:none!important;">
         <div class="stat-pill"><span class="val" id="statActivities">—</span><span class="lbl">Main Activities</span></div>
         <div class="stat-pill"><span class="val" id="statSubActivities">—</span><span class="lbl">Sub-Activities</span></div>
         <div class="stat-pill"><span class="val" id="statOutcomes">—</span><span class="lbl">Outcomes Defined</span></div>
       </div>
 
-      <!-- Progress strip -->
+      <!-- Progress strip — 7 stages now -->
       <div class="progress-strip mt-5">
-        <span style="background:rgba(255,255,255,.25);"></span>
-        <span style="background:rgba(255,255,255,.35);"></span>
-        <span style="background:rgba(255,255,255,.5);"></span>
-        <span style="background:rgba(255,255,255,.65);"></span>
-        <span style="background:rgba(255,255,255,.8);"></span>
-        <span style="background:rgba(255,255,255,.95);"></span>
+        <span style="background:rgba(255,255,255,.2);"></span>
+        <span style="background:rgba(255,255,255,.32);"></span>
+        <span style="background:rgba(255,255,255,.45);"></span>
+        <span style="background:rgba(255,255,255,.57);"></span>
+        <span style="background:rgba(255,255,255,.7);"></span>
+        <span style="background:rgba(255,255,255,.83);"></span>
+        <span style="background:rgba(255,255,255,.96);"></span>
       </div>
     </div>
   </header>
 
-  <!-- ══════════════════ MAIN ══════════════════ -->
+  <!-- MAIN -->
   <main class="relative z-10 max-w-7xl mx-auto px-4 md:px-10 py-8">
 
-    <!-- Search -->
     <div class="search-wrap mb-7">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;">
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
-      <input type="text" id="searchInput" placeholder="Search activities, sub-tasks, outcomes…" autocomplete="off" />
+      <input type="text" id="searchInput" placeholder="Search activities, sub-tasks, outcomes, rationale…" autocomplete="off" />
     </div>
 
-    <!-- Skeleton loader -->
     <div id="skeletonLoader">
       <div style="display:flex;gap:.75rem;margin-bottom:1.5rem;">
         <div class="skeleton" style="width:150px;height:13px;"></div>
@@ -471,385 +293,307 @@
         <div class="skeleton" style="height:88px;border-radius:1rem;"></div>
         <div class="skeleton" style="height:88px;border-radius:1rem;"></div>
         <div class="skeleton" style="height:88px;border-radius:1rem;"></div>
+        <div class="skeleton" style="height:88px;border-radius:1rem;"></div>
+        <div class="skeleton" style="height:88px;border-radius:1rem;"></div>
+        <div class="skeleton" style="height:88px;border-radius:1rem;"></div>
       </div>
     </div>
 
-    <!-- Error panel -->
     <div id="errorPanel" style="display:none;" class="error-card">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:40px;height:40px;margin:0 auto 1rem;">
         <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
       </svg>
       <p style="font-family:'Rajdhani',sans-serif;font-size:1.3rem;font-weight:700;color:#dc2626;">Unable to Load Data</p>
       <p id="errorMsg" style="font-size:.875rem;color:#9ca3af;margin-top:.5rem;"></p>
-      <button onclick="loadData()" style="margin-top:1.5rem;background:#fef2f2;border:1.5px solid #fca5a5;color:#dc2626;padding:.55rem 1.75rem;border-radius:.5rem;cursor:pointer;font-size:.85rem;font-family:'DM Sans',sans-serif;font-weight:500;transition:background .2s;" onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='#fef2f2'">
+      <button onclick="loadData()" style="margin-top:1.5rem;background:#fef2f2;border:1.5px solid #fca5a5;color:#dc2626;padding:.55rem 1.75rem;border-radius:.5rem;cursor:pointer;font-size:.85rem;font-family:'DM Sans',sans-serif;font-weight:500;" onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='#fef2f2'">
         Retry
       </button>
     </div>
 
-    <!-- Activities container -->
     <div id="activitiesContainer" style="display:none;">
       <div id="noResults">No activities match your search.</div>
       <div id="cardList" class="flex flex-col gap-4"></div>
     </div>
-
   </main>
 
-  <!-- ══════════════════ FOOTER ══════════════════ -->
-  <footer style="position:relative;z-index:10;border-top:1.5px solid var(--border);margin-top:3rem;padding:1.25rem 2.5rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem;background:var(--bg-white);">
-    <span style="font-size:.75rem;color:var(--text-muted);">© 2026 Kerala Academy for Skills Excellence (KASE) · Naipunyolsavam Project Management Unit</span>
-    <span style="font-size:.72rem;color:var(--text-light);font-family:'Courier New',monospace;">DATA: Google Sheets CSV · LIVE SYNC</span>
+  <!-- FOOTER -->
+  <footer style="position:relative;z-index:10;border-top:1.5px solid var(--border);margin-top:3rem;padding:1.25rem 2.5rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem;background:var(--white);">
+    <span style="font-size:.75rem;color:var(--ink-mute);">© 2026 Kerala Academy for Skills Excellence (KASE) · Naipunyolsavam Project Management Unit</span>
+    <span style="font-size:.71rem;color:var(--ink-lite);font-family:'Courier New',monospace;">DATA: Google Sheets CSV · LIVE SYNC</span>
   </footer>
 
-  <!-- ══════════════════ JAVASCRIPT ══════════════════ -->
-<script>
-    /* ============================================================
+  <!-- JAVASCRIPT -->
+  <script>
+    /* ═══════════════════════════════════════════════
        CONFIG
-    ============================================================ */
+    ═══════════════════════════════════════════════ */
     const CSV_URL =
       'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3Wf8Z0hI7QOV2hT6Zva3Sv8aDENODEieQjHqgRw6Th-zVj2Z-6LbTjwUajGlPpFbraq56JwSGJ78K/pub?output=csv';
 
-    /* Column indices (0-based) — matches Google Sheet / docx column order:
-       Col 0: Serial Number (only 1–6 are main activity IDs; blank for sub-rows)
-       Col 1: Activity Title
-       Col 2: Objective
-       Col 3: Task Precedence (0.1, 0.2, 1, 1.1, 2, 2.1 … 8.5)
-       Col 4: Sub-Activities / Process Involved
-       Col 5: Timeline
-       Col 6: Outcome
-       Col 7: Rationale
+    /*
+      Column layout (0-based):
+        0  Serial Number   — "1"…"7" on main rows only; blank on sub-rows
+        1  Activity Title  — only on main rows
+        2  Objective       — only on main rows
+        3  Task Precedence — "0.1","0.2"…"7.5" on all rows including first sub on main row
+        4  Sub-Activity / Process Involved
+        5  Timeline
+        6  Outcome
+        7  Rationale
     */
-    const COL = {
-      ID:           0,
-      ACTIVITY:     1,
-      OBJECTIVE:    2,
-      TASK_PREC:    3,
-      SUB_ACTIVITY: 4,
-      TIMELINE:     5,
-      OUTCOME:      6,
-      RATIONALE:    7,
-    };
+    const COL = { ID:0, ACT:1, OBJ:2, TP:3, SUB:4, TL:5, OUT:6, RAT:7 };
 
-    /* ============================================================
+    /* ═══════════════════════════════════════════════
        STATE
-    ============================================================ */
-    let allActivities  = [];   // parsed main activities with nested subs
-    let searchQuery    = '';
+    ═══════════════════════════════════════════════ */
+    let allActivities = [];
+    let searchQuery   = '';
 
-    /* ============================================================
-       CSV PARSING
-    ============================================================ */
-    /**
-     * Minimal CSV parser that handles quoted fields with commas/newlines.
-     * Returns an array of row-arrays.
-     */
+    /* ═══════════════════════════════════════════════
+       CSV PARSER
+       Handles quoted fields, embedded commas, newlines
+    ═══════════════════════════════════════════════ */
     function parseCSV(raw) {
       const rows = [];
-      let cur = [];
-      let field = '';
-      let inQuotes = false;
-
+      let cur = [], field = '', inQ = false;
       for (let i = 0; i < raw.length; i++) {
-        const ch = raw[i];
-        const next = raw[i + 1];
-
-        if (inQuotes) {
-          if (ch === '"' && next === '"') { field += '"'; i++; }
-          else if (ch === '"')           { inQuotes = false; }
-          else                           { field += ch; }
+        const ch = raw[i], nx = raw[i+1];
+        if (inQ) {
+          if (ch==='"' && nx==='"') { field+='"'; i++; }
+          else if (ch==='"')        { inQ=false; }
+          else                      { field+=ch; }
         } else {
-          if (ch === '"')                { inQuotes = true; }
-          else if (ch === ',')           { cur.push(field.trim()); field = ''; }
-          else if (ch === '\n')          { cur.push(field.trim()); rows.push(cur); cur = []; field = ''; }
-          else if (ch === '\r')          { /* skip CR */ }
-          else                           { field += ch; }
+          if (ch==='"')             { inQ=true; }
+          else if (ch===',')        { cur.push(field.trim()); field=''; }
+          else if (ch==='\n')       { cur.push(field.trim()); rows.push(cur); cur=[]; field=''; }
+          else if (ch==='\r')       { /* skip CRLF */ }
+          else                      { field+=ch; }
         }
       }
-      // flush last field/row
       cur.push(field.trim());
-      if (cur.some(c => c !== '')) rows.push(cur);
-
+      if (cur.some(c=>c!=='')) rows.push(cur);
       return rows;
     }
 
-    /**
-     * Returns true only for genuine MAIN activity rows.
-     *
-     * A main activity row has:
-     *   col 0 (ID)       → a STRICT POSITIVE INTEGER  ("1", "2" … "6")
-     *   col 1 (Activity) → a non-empty title
-     *   col 3 (TaskPrec) → EMPTY  (sub-tasks have their ID here, not in col 0)
-     *
-     * This prevents false positives like:
-     *   "0.1", "0.2"  → decimal pre-task IDs that Google Sheets can put in col 0
-     *   "3","4"…"8"   → whole-number milestone IDs that belong in col 3
-     */
-    function isMainActivityRow(row) {
-      // A main activity row has ALL of:
-      //   col 0 (Serial)   → a STRICT POSITIVE INTEGER with NO decimal: "1","2"…"6"
-      //   col 1 (Activity) → a non-empty title string
-      //   col 2 (Objective)→ a non-empty objective string
-      //
-      // Sub-activity rows ALWAYS have col 0 empty (blank) and their ID in col 3.
-      // The previous guard on col 3 was wrong — main rows in the live sheet
-      // also carry a value in col 3 (the first child task ID).
-      const serial    = (row[COL.ID]        || '').trim();
-      const title     = (row[COL.ACTIVITY]  || '').trim();
-      const objective = (row[COL.OBJECTIVE] || '').trim();
+    /* ═══════════════════════════════════════════════
+       ROW CLASSIFIER
 
-      if (!serial)    return false;  // blank col 0 → definitely a sub-row
-      if (!title)     return false;  // no activity title → sub-row
-      if (!objective) return false;  // no objective → sub-row (sub-rows never have objectives)
-      const n = Number(serial);
-      if (!Number.isFinite(n))  return false;
-      if (!Number.isInteger(n)) return false;  // decimals like 0.1, 0.2 → sub-task
-      if (n < 1)                return false;  // must be a positive integer
-      return true;
+       A MAIN ACTIVITY row satisfies ALL of:
+         • col 0 = strict positive integer (1…7) — no decimals
+         • col 1 = non-empty Activity title
+         • col 2 = non-empty Objective
+
+       All other content rows are SUB-ACTIVITY rows.
+       NB: The SAME main-activity row also holds the FIRST
+           sub-activity in cols 3+4 — we capture both.
+    ═══════════════════════════════════════════════ */
+    function isMainRow(row) {
+      const s = (row[COL.ID]  || '').trim();
+      const t = (row[COL.ACT] || '').trim();
+      const o = (row[COL.OBJ] || '').trim();
+      if (!s || !t || !o) return false;
+      const n = Number(s);
+      return Number.isFinite(n) && Number.isInteger(n) && n >= 1;
     }
 
-    /**
-     * Transform raw CSV rows into structured activity objects.
-     *
-     * Schema: { id, title, objective,
-     *           subActivities: [{ taskPrec, detail, outcome, rationale, isSection }] }
-     *
-     * Key parsing rule (from docx / live Google Sheet):
-     *   • Col 0 positive integer + Col 1 title + Col 2 objective → NEW Main Activity
-     *   • All other data rows (Col 0 empty; task ID like 0.1, 1, 1.1 … in Col 3) → Sub-Activity
-     */
+    /* "Section header" = bold milestone row with plain integer TP (1,2,3…) */
+    function isSec(tp) {
+      const n = Number(tp);
+      return /^\d+$/.test(tp) && Number.isFinite(n) && Number.isInteger(n) && n >= 1;
+    }
+
+    /* ═══════════════════════════════════════════════
+       ACTIVITY BUILDER
+    ═══════════════════════════════════════════════ */
     function buildActivities(rows) {
       const activities = [];
-      let current = null;
+      let cur = null;
 
-      // Skip header row (row 0)
       for (let r = 1; r < rows.length; r++) {
         const row = rows[r];
+        const tp  = (row[COL.TP]  || '').trim();
+        const sub = (row[COL.SUB] || '').trim();
+        const out = (row[COL.OUT] || '').trim();
+        const rat = (row[COL.RAT] || '').trim();
 
-        const taskPrec  = (row[COL.TASK_PREC]    || '').trim();
-        const subDetail = (row[COL.SUB_ACTIVITY] || '').trim();
-        const outcome   = (row[COL.OUTCOME]      || '').trim();
-        const rationale = (row[COL.RATIONALE]    || '').trim();
-
-        if (isMainActivityRow(row)) {
-          // ── New MAIN activity ──
-          current = {
-            id:            (row[COL.ID]        || '').trim(),
-            title:         (row[COL.ACTIVITY]  || '').trim(),
-            objective:     (row[COL.OBJECTIVE] || '').trim(),
-            subActivities: [],
+        if (isMainRow(row)) {
+          cur = {
+            id:    (row[COL.ID]  || '').trim(),
+            title: (row[COL.ACT] || '').trim(),
+            obj:   (row[COL.OBJ] || '').trim(),
+            subs:  [],
           };
-          activities.push(current);
+          activities.push(cur);
 
-          // CRITICAL FIX: The main activity row itself often contains the FIRST
-          // sub-activity in cols 3 & 4 on the very same row (as seen in the docx/sheet).
-          // We must capture it here — the else-if below won't run for this row.
-          if (taskPrec || subDetail) {
-            const tpNum     = Number(taskPrec);
-            const isSection = /^\d+$/.test(taskPrec)
-                              && Number.isFinite(tpNum)
-                              && Number.isInteger(tpNum)
-                              && tpNum >= 1;
-            current.subActivities.push({ taskPrec, detail: subDetail, outcome, rationale, isSection });
+          /* Capture the first sub-activity that shares this row */
+          if (tp || sub) {
+            cur.subs.push({ tp, sub, out, rat, sec: isSec(tp) });
           }
 
-        } else if (taskPrec || subDetail) {
-          // ── Sub-activity row ──
-          // Guard: if no parent yet (edge case at top of sheet), create placeholder
-          if (!current) {
-            current = { id: '?', title: 'Uncategorised', objective: '', subActivities: [] };
-            activities.push(current);
+        } else if (tp || sub) {
+          if (!cur) {
+            cur = { id:'?', title:'Uncategorised', obj:'', subs:[] };
+            activities.push(cur);
           }
-
-          // "Section header" rows are bold milestone steps with whole-number IDs (1, 2 … 8).
-          // They differ from decimal sub-steps (0.1, 1.1, 2.3 …).
-          const tpNum     = Number(taskPrec);
-          const isSection = /^\d+$/.test(taskPrec)
-                            && Number.isFinite(tpNum)
-                            && Number.isInteger(tpNum)
-                            && tpNum >= 1;
-
-          current.subActivities.push({
-            taskPrec,
-            detail:    subDetail,
-            outcome,
-            rationale,
-            isSection,
-          });
+          cur.subs.push({ tp, sub, out, rat, sec: isSec(tp) });
         }
-        // Completely blank rows are silently skipped
       }
-
       return activities;
     }
 
-    /* ============================================================
-       RENDER
-    ============================================================ */
-    const palette = [
-      { from: '#0a3d52', to: '#0e5774' },
-      { from: '#0e5774', to: '#1380a8' },
-      { from: '#116b8e', to: '#1a9dc9' },
-      { from: '#1380a8', to: '#2db8e4' },
-      { from: '#0a3d52', to: '#1a9dc9' },
-      { from: '#0e5774', to: '#2db8e4' },
+    /* ═══════════════════════════════════════════════
+       PALETTE — 7 teal gradient shades (1 per main activity)
+    ═══════════════════════════════════════════════ */
+    const PAL = [
+      { a:'#0a3d52', b:'#0e5774' },
+      { a:'#0e5774', b:'#1380a8' },
+      { a:'#116b8e', b:'#1a9dc9' },
+      { a:'#0a3d52', b:'#1a9dc9' },
+      { a:'#1380a8', b:'#2db8e4' },
+      { a:'#0e5774', b:'#2db8e4' },
+      { a:'#116b8e', b:'#2db8e4' },
     ];
 
-    function renderActivities(activities) {
-      const container = document.getElementById('cardList');
-      container.innerHTML = '';
+    /* ═══════════════════════════════════════════════
+       RENDER
+    ═══════════════════════════════════════════════ */
+    function esc(s) {
+      return String(s)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
 
-      const filtered = activities.filter(a => {
-        if (!searchQuery) return true;
-        const q = searchQuery.toLowerCase();
-        return (
-          a.title.toLowerCase().includes(q) ||
-          a.objective.toLowerCase().includes(q) ||
-          a.subActivities.some(s =>
-            s.detail.toLowerCase().includes(q) ||
-            s.outcome.toLowerCase().includes(q) ||
-            s.rationale.toLowerCase().includes(q)
+    function renderActivities(list) {
+      const wrap = document.getElementById('cardList');
+      wrap.innerHTML = '';
+
+      const q = searchQuery.toLowerCase();
+      const filtered = q
+        ? list.filter(a =>
+            a.title.toLowerCase().includes(q) ||
+            a.obj.toLowerCase().includes(q) ||
+            a.subs.some(s =>
+              s.sub.toLowerCase().includes(q) ||
+              s.out.toLowerCase().includes(q) ||
+              s.rat.toLowerCase().includes(q)
+            )
           )
-        );
-      });
+        : list;
 
       document.getElementById('noResults').style.display =
         filtered.length === 0 ? 'block' : 'none';
 
       filtered.forEach((act, idx) => {
-        const p   = palette[(idx) % palette.length];
+        const p    = PAL[idx % PAL.length];
         const card = document.createElement('div');
         card.className = 'activity-card fade-up';
-        card.style.animationDelay = `${idx * 60}ms`;
+        card.style.animationDelay = `${idx * 55}ms`;
 
-        /* ── Build sub-activities table rows ── */
-        let tableRows = '';
-        act.subActivities.forEach(sub => {
-          const outcomeCell = sub.outcome
-            ? `<span class="badge-outcome">${escapeHtml(sub.outcome)}</span>`
-            : `<span style="color:var(--text-light);">—</span>`;
-
-          const precCell = sub.taskPrec
-            ? `<span class="badge-prec">${escapeHtml(sub.taskPrec)}</span>`
+        /* Build table rows */
+        let trs = '';
+        act.subs.forEach(s => {
+          const outCell = s.out
+            ? `<span class="badge-outcome">${esc(s.out)}</span>`
+            : `<span style="color:var(--ink-lite);">—</span>`;
+          const tpCell  = s.tp
+            ? `<span class="badge-prec">${esc(s.tp)}</span>`
             : '';
+          const ratCell = s.rat
+            ? `<span class="rationale-text">${esc(s.rat)}</span>`
+            : `<span style="color:var(--ink-lite);">—</span>`;
 
-          const rationaleCell = sub.rationale
-            ? `<span class="rationale-text">${escapeHtml(sub.rationale)}</span>`
-            : '<span style="color:var(--text-light);">—</span>';
-
-          tableRows += `
-            <tr class="${sub.isSection ? 'is-section' : ''}">
-              <td>${precCell}</td>
-              <td>${escapeHtml(sub.detail)}</td>
-              <td>${outcomeCell}</td>
-              <td>${rationaleCell}</td>
+          trs += `
+            <tr class="${s.sec ? 'is-section' : ''}">
+              <td>${tpCell}</td>
+              <td>${esc(s.sub)}</td>
+              <td>${outCell}</td>
+              <td>${ratCell}</td>
             </tr>`;
         });
 
-        /* ── Card HTML ── */
         card.innerHTML = `
-          <button
-            class="card-header"
-            aria-expanded="false"
-            aria-controls="body-${act.id}"
-            onclick="toggleCard(this)"
-          >
-            <!-- Serial badge -->
+          <button class="card-header" aria-expanded="false"
+                  aria-controls="bd-${act.id}" onclick="toggleCard(this)">
             <div class="serial-badge"
-                 style="background:linear-gradient(135deg,${p.from},${p.to});">
-              ${escapeHtml(act.id)}
+                 style="background:linear-gradient(135deg,${p.a},${p.b});">
+              ${esc(act.id)}
             </div>
-
-            <!-- Title block -->
             <div style="flex:1;min-width:0;">
-              <div style="font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;color:#0a2d3d;line-height:1.2;">
-                ${escapeHtml(act.title)}
+              <div style="font-family:'Rajdhani',sans-serif;font-size:1.18rem;
+                          font-weight:700;color:var(--ink);line-height:1.2;">
+                ${esc(act.title)}
               </div>
-              ${act.objective ? `
-                <div style="font-size:.8rem;color:var(--text-mid);margin-top:.3rem;line-height:1.5;">
-                  <span style="color:var(--text-muted);font-weight:600;margin-right:.35rem;">Objective:</span>${escapeHtml(act.objective)}
-                </div>` : ''}
-              <div style="display:flex;align-items:center;gap:.65rem;margin-top:.5rem;">
-                <span style="font-size:.72rem;color:var(--teal-800);background:var(--teal-50);border:1px solid var(--teal-200);padding:.2rem .7rem;border-radius:999px;font-weight:500;">
-                  ${act.subActivities.length} sub-tasks
+              ${act.obj ? `
+              <div style="font-size:.8rem;color:var(--ink-mid);margin-top:.3rem;line-height:1.5;">
+                <span style="color:var(--ink-mute);font-weight:600;margin-right:.35rem;">Objective:</span>${esc(act.obj)}
+              </div>` : ''}
+              <div style="margin-top:.5rem;">
+                <span style="font-size:.71rem;color:var(--t800);background:var(--t50);
+                             border:1px solid var(--t200);padding:.2rem .72rem;
+                             border-radius:999px;font-weight:500;">
+                  ${act.subs.length} sub-tasks
                 </span>
               </div>
             </div>
-
-            <!-- Chevron -->
-            <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"/>
             </svg>
           </button>
 
-          <!-- Accordion body -->
-          <div class="accordion-body" id="body-${act.id}" role="region">
+          <div class="accordion-body" id="bd-${act.id}" role="region">
             <div class="table-scroll">
               <table class="sub-table">
                 <thead>
                   <tr>
-                    <th style="width:90px;">Prec. ID</th>
-                    <th>Sub-Activity / Process</th>
-                    <th style="width:260px;">Outcome</th>
-                    <th style="width:220px;">Rationale</th>
+                    <th style="width:95px;">Prec. ID</th>
+                    <th>Sub-Activity / Process Involved</th>
+                    <th style="width:255px;">Outcome</th>
+                    <th style="width:215px;">Rationale</th>
                   </tr>
                 </thead>
                 <tbody>
-                  ${tableRows || '<tr><td colspan="4" style="color:var(--text-muted);padding:1.5rem;text-align:center;font-style:italic;">No sub-activities recorded.</td></tr>'}
+                  ${trs || `<tr><td colspan="4" style="color:var(--ink-mute);padding:1.5rem;text-align:center;font-style:italic;">No sub-activities recorded.</td></tr>`}
                 </tbody>
               </table>
             </div>
-          </div>
-        `;
+          </div>`;
 
-        container.appendChild(card);
+        wrap.appendChild(card);
       });
     }
 
-    /* ============================================================
+    /* ═══════════════════════════════════════════════
        TOGGLE ACCORDION
-    ============================================================ */
+    ═══════════════════════════════════════════════ */
     function toggleCard(btn) {
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
-      const bodyId   = btn.getAttribute('aria-controls');
-      const body     = document.getElementById(bodyId);
-
-      btn.setAttribute('aria-expanded', String(!expanded));
-      body.classList.toggle('open', !expanded);
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      const body = document.getElementById(btn.getAttribute('aria-controls'));
+      btn.setAttribute('aria-expanded', String(!open));
+      body.classList.toggle('open', !open);
     }
 
-    /* ============================================================
-       UTILITY
-    ============================================================ */
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-    }
-
-    function updateStats(activities) {
-      const totalSubs = activities.reduce((s, a) => s + a.subActivities.length, 0);
-      const totalOut  = activities.reduce((s, a) =>
-        s + a.subActivities.filter(sub => sub.outcome).length, 0);
-
-      document.getElementById('statActivities').textContent    = activities.length;
+    /* ═══════════════════════════════════════════════
+       STATS
+    ═══════════════════════════════════════════════ */
+    function updateStats(list) {
+      const totalSubs = list.reduce((s,a) => s + a.subs.length, 0);
+      const totalOut  = list.reduce((s,a) => s + a.subs.filter(x=>x.out).length, 0);
+      document.getElementById('statActivities').textContent    = list.length;
       document.getElementById('statSubActivities').textContent = totalSubs;
       document.getElementById('statOutcomes').textContent      = totalOut;
-
-      const statsRow = document.getElementById('statsRow');
-      statsRow.style.display   = 'flex';
-      statsRow.style.important = '';
-      statsRow.removeAttribute('style');
-      statsRow.style.display = 'flex';
+      const row = document.getElementById('statsRow');
+      row.removeAttribute('style');
+      row.style.display = 'flex';
     }
 
-    /* ============================================================
+    /* ═══════════════════════════════════════════════
        DATA LOADING
-    ============================================================ */
+    ═══════════════════════════════════════════════ */
     async function loadData() {
-      // Show skeleton, hide others
-      document.getElementById('skeletonLoader').style.display     = 'block';
-      document.getElementById('errorPanel').style.display         = 'none';
+      document.getElementById('skeletonLoader').style.display      = 'block';
+      document.getElementById('errorPanel').style.display          = 'none';
       document.getElementById('activitiesContainer').style.display = 'none';
 
       try {
@@ -858,21 +602,17 @@
 
         const text = await resp.text();
         if (!text || text.trim().length < 10)
-          throw new Error('Empty or invalid CSV response from the data source.');
+          throw new Error('Empty or invalid CSV response from data source.');
 
-        const rows       = parseCSV(text);
-        allActivities    = buildActivities(rows);
+        const rows = parseCSV(text);
+        allActivities = buildActivities(rows);
 
         if (allActivities.length === 0)
-          throw new Error('CSV was fetched but no activities could be parsed. Check the sheet structure.');
+          throw new Error('CSV fetched but no activities parsed. Please check sheet structure.');
 
-        // Update stats
         updateStats(allActivities);
-
-        // Render
         renderActivities(allActivities);
 
-        // Swap skeleton → content
         document.getElementById('skeletonLoader').style.display      = 'none';
         document.getElementById('activitiesContainer').style.display = 'block';
 
@@ -880,28 +620,27 @@
         document.getElementById('skeletonLoader').style.display = 'none';
         document.getElementById('errorPanel').style.display     = 'block';
         document.getElementById('errorMsg').textContent         =
-          err.message || 'An unexpected error occurred while loading data.';
-        console.error('[Naipunyolsavam Portal] Load error:', err);
+          err.message || 'An unexpected error occurred.';
+        console.error('[Naipunyolsavam Portal]', err);
       }
     }
 
-    /* ============================================================
+    /* ═══════════════════════════════════════════════
        SEARCH
-    ============================================================ */
-    let searchTimer;
+    ═══════════════════════════════════════════════ */
+    let _st;
     document.getElementById('searchInput').addEventListener('input', e => {
-      clearTimeout(searchTimer);
-      searchTimer = setTimeout(() => {
+      clearTimeout(_st);
+      _st = setTimeout(() => {
         searchQuery = e.target.value.trim();
         renderActivities(allActivities);
-      }, 250);
+      }, 220);
     });
 
-    /* ============================================================
-       BOOTSTRAP
-    ============================================================ */
+    /* ═══════════════════════════════════════════════
+       BOOT
+    ═══════════════════════════════════════════════ */
     loadData();
   </script>
-
 </body>
 </html>
